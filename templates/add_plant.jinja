@@ -1,0 +1,34 @@
+{% extends 'base.jinja' %}
+
+{% block title %}Plants - add to our database{% endblock %}
+
+{% block content %}
+<h1>Plants</h1>
+<p>
+Add plant:
+<br />
+<form method="POST" action="{{ url_for('add_plant', next=request.args.get('next'))}}">
+    {{ form.csrf_token }}
+    {{form.name.label }} {{form. name(size=20)}}
+    <br>
+    {{form.german_name.label }} {{form.german_name(size=20)}}
+    <br>
+    {{form.latin_name.label }} {{form.latin_name(size=20)}}
+    <br>
+    {{form.plant_information.label }} {{form.plant_information(size=20)}}
+    <br>
+    {{form.light.label }} {{form.light(size=20)}}
+    <br>
+    {{form.watering.label }} {{form.watering(size=20)}}
+    <br>
+    {{form.placement.label }} {{form.placement(size=20)}}
+    <br>
+    {{form.insect_friendly.label }} {{form.insect_friendly(size=20)}}
+    <br>
+     {{form.other_information.label }} {{form.other_information(size=20)}}
+    <br>
+    <input type="submit" value="Go">
+</form>
+</p>
+{% endblock %}
+

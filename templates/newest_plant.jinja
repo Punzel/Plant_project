@@ -1,0 +1,38 @@
+{% extends 'base.jinja' %}
+
+{% block title %} Newest Plant{% endblock %}
+
+{% block content %}
+<h1>Newest Plant</h1>
+<p>
+<br />
+<br>
+<table border="1" cellpadding="5" cellspacing="5">
+    <tr>
+    <th>Name</th>
+    <th>German Name</th> 
+    <th>Latin Name</th>
+    <th>Plant Information</th>
+    <th>Light</th>
+    <th>Placement</th>
+    <th>Insect Friendly</th>
+    <th>Other Information</th>
+    </tr>
+    {% for item in newest %}
+          <tr>
+         <td>{{ item.name }}</td>
+         <td>{{ item.german_name }}</td>
+         <td>{{ item.latin_name }}</td>
+         <td>{{ item.plant_information }}</td>
+         <td>{{ item.light }}</td>
+         <td>{{ item.placement }}</td>
+         <td>{{ item.insect_friendly }}</td>
+         <td>{{ item.other_information }}</td>
+          </tr>
+       {% endfor %}
+<br />
+   
+<br>
+<a href="{{ url_for('add_plant') }}">Add Plant</a>
+</p>
+{% endblock %}
