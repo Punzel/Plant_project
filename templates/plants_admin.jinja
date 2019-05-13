@@ -1,6 +1,6 @@
 {% extends 'base.jinja' %}
 
-{% block title %}Plants{% endblock %}
+{% block title %}Admin Add and EditPlants{% endblock %}
 
 {% block content %}
 <h1>Plants</h1>
@@ -15,13 +15,11 @@
     <th>Placement</th>
     <th>Insect Friendly</th>
     <th>Other Information</th>
-    <th>Picture</th>
-    <th>New Picture</th>
-    <th>Edit</th>
+    <th>Pictures</th>
     </tr>
     {% for item in data %}
           <tr>
-         <td>{{ item.name }}</td>
+         <td>{{ item.name }} </td>
          <td>{{ item.german_name }}</td>
          <td>{{ item.latin_name }}</td>
          <td>{{ item.plant_information }}</td>
