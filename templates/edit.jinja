@@ -1,0 +1,66 @@
+{% extends 'base.jinja' %}
+
+{% block title %}Admin Add and EditPlants{% endblock %}
+
+{% block content %}
+
+
+<h1>Plants</h1>
+<p>
+Edit plant:
+<p>
+<br />
+<table border="1" cellpadding="5" cellspacing="5">
+    <tr>
+    <th>Name</th>
+    <th>German Name</th> 
+    <th>Latin Name</th>
+    <th>Plant Information</th>
+    <th>Light</th>
+    <th>Placement</th>
+    <th>Insect Friendly</th>
+    <th>Other Information</th>
+    </tr>
+    {% for item in plant_edit %}
+          <tr>
+         <td>{{ item.name }}</td>
+         <td>{{ item.german_name }}</td>
+         <td>{{ item.latin_name }}</td>
+         <td>{{ item.plant_information }}</td>
+         <td>{{ item.light }}</td>
+         <td>{{ item.placement }}</td>
+         <td>{{ item.insect_friendly }}</td>
+         <td>{{ item.other_information }}</td>
+          </tr>
+       {% endfor %}
+       
+Edit plant:
+<br />
+<form method="POST" action="{{ url_for('add_plant', next=request.args.get('next'))}}">
+ {% for item in plant_edit %}
+    {{ form.csrf_token }}
+    {{form.name.label }} {{form.name(size=20)}} {{ item.name }}
+    <br>
+    {{form.german_name.label }} {{form.german_name(size=20)}}
+    <br>
+    {{form.latin_name.label }} {{form.latin_name(size=20)}}
+    <br>
+    {{form.plant_information.label }} {{form.plant_information(size=20)}}
+    <br>
+    {{form.light.label }} {{form.light(size=20)}}
+    <br>
+    {{form.watering.label }} {{form.watering(size=20)}}
+    <br>
+    {{form.placement.label }} {{form.placement(size=20)}}
+    <br>
+    {{form.insect_friendly.label }} {{form.insect_friendly(size=20)}}
+    <br>
+     {{form.other_information.label }} {{form.other_information(size=20)}}
+    <br>
+    <input type="submit" value="Go">
+</form>
+ {% endfor %}
+</p>
+{% endblock %}
+
+
