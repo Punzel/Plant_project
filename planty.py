@@ -1,8 +1,8 @@
 from flask import Flask, render_template, url_for, redirect, flash, request, session
 import config
-from forms import add_plant_form, AddPictureForm
+from forms import add_plant_form, add_picture_form, edit_form
 from database import db_session
-from models import Plants
+from models import Plants, Pictures
 from sqlalchemy import asc, func, desc
 from flask_table import Table, Col
 import os
@@ -37,16 +37,16 @@ def plants():
 def add_plant():
     form = add_plant_form()
     if form.validate_on_submit():
-        print "duh"
+        print ("duh")
         try:
             new_plant = Plants(name=form.name.data, german_name=form.german_name.data, latin_name=form.latin_name.data, plant_information=form.plant_information.data, light=form.light.data, watering=form.watering.data, placement=form.placement.data, insect_friendly=form.insect_friendly.data, other_information=form.other_information.data)
             db_session.add(new_plant)
             db_session.commit()
-            print "New plant added"
+            print ("New plant added")
             return redirect(url_for('plants'))
         except:
             flash('plant could not be added')
-            print "could not be added. Error!"
+            print ("could not be added. Error!")
     return render_template ('add_plant.jinja', form=form)
     
     
@@ -77,16 +77,41 @@ def upload_picture():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
+            print (filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect(url_for('plants', filename=filename))
     return render_template ('upload_picture.jinja')    
+
 
 #admin function for editing information
 @app.route("/plants_admin", methods=["GET", "POST"])      
 def plants_admin():
     data = Plants.query.all()
-    return render_template('plants_admin.jinja', data=data)
+    pictures = Pictures.query.all()
+    return render_template('plants_admin.jinja', data=data, pictures=pictures)
+ 
+#edit data 
+@app.route("/edit/<id>", methods=["GET", "POST"])
+def edit(id):
+    plant_edit = db_session.query(Plants).filter(Plants.id == id)
+    plant_edit
+    form = edit_form()
+    print (plant_edit)
+    print (id)
+    print ("duh")
+    return render_template ('edit.jinja', plant_edit=plant_edit, form=form) 
 
+#add pictures of plants
+@app.route("/add_picture", methods=["GET", "POST"]) 
+def add_picture():
+    form = add_picture_form
+    if form.validate_on_submit():
+        try:
+            pic_url = form.pic_url.data
+            print (pic_url)
+        except:
+            print ("error")
+    return render_template('add_picture.jinja', form=form)
 '''
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
