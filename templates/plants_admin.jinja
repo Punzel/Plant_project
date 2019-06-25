@@ -29,6 +29,14 @@
          <td>{{ item.other_information }}</td>
           </tr>
        {% endfor %}
+       
+       
+        {% for pic in pictures %}
+
+            <img src={{pic}} >
+      
+       {% endfor %}
+       
 <br />
 <br>
 <a href="{{ url_for('add_plant') }}">Add Plant</a>
