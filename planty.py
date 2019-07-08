@@ -94,11 +94,22 @@ def plants_admin():
 @app.route("/edit/<id>", methods=["GET", "POST"])
 def edit(id):
     plant_edit = db_session.query(Plants).filter(Plants.id == id)
-    plant_edit
     form = edit_form()
-    print (plant_edit)
-    print (id)
-    print ("duh")
+    pre_poplate = []
+    for item in plant_edit:
+        print (item.name)      
+    if request.method == 'GET':
+        for item in plant_edit:
+            form.name.data = item.name
+            form.german_name.data = item.german_name
+            form.latin_name.data = item.latin_name
+            form.plant_information.data = item.plant_information
+            form.light.data = item.light
+            form.watering.data = item.watering
+            form.placement.data = item.placement
+            form.insect_friendly.data = item.insect_friendly
+            form.other_information.data = item.other_information
+
     return render_template ('edit.jinja', plant_edit=plant_edit, form=form) 
 
 #add pictures of plants
