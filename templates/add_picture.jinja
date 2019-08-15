@@ -1,0 +1,20 @@
+{% extends 'base.jinja' %}
+
+{% block title %}Upload plant pictures{% endblock %}
+
+{% block content %}
+<h1>Plants</h1>
+<p>
+Add plant picture:
+<br />
+
+{% for item in picture_add %}
+    
+ <form action="/benutzerfotohochladen" method="POST" enctype="multipart/form-data">
+    <h4> Choose a picture which shows a {{ item.latin_name }} : </h4>
+    Select a File: <input type="file" name="upload" />
+    <input type="submit" value="Hochladen" />
+    </form>
+      {% endfor %}
+    
+{% endblock %}
