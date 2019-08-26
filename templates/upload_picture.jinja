@@ -5,7 +5,12 @@
 {% block content %}
 <h1>Plants</h1>
 <p>
-Add plant:
+Add plant picture:
+
+{% for item in picture_add %}
+<h4> Choose a picture which shows a {{ item.latin_name }} : </h4>
+ {% endfor %}
+
 <br />
 <form method=post enctype=multipart/form-data>
       <input type=file name=file>

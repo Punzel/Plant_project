@@ -15,6 +15,8 @@
     <th>Placement</th>
     <th>Insect Friendly</th>
     <th>Other Information</th>
+    <th>Edit</th>
+    <th>Add Pictures</th>
     <th>Pictures</th>
     </tr>
     {% for item in data %}
@@ -27,16 +29,21 @@
          <td>{{ item.placement }}</td>
          <td>{{ item.insect_friendly }}</td>
          <td>{{ item.other_information }}</td>
-          </tr>
-       {% endfor %}
+         <td><a href="{{ url_for('edit', id=item.id) }}">Edit</a></td>
+         <td><a href="{{ url_for('upload_picture', id=item.id) }}">Add Picture</a></td>
        
-       
-        {% for pic in pictures %}
+         {% for pic in pictures %}
+            {% if item.id==pic.plant_id %}
+                <td> <img src="static/pictures/{{ pic.picturepath }}"  width="120" height="90" /> </td>
+           {% else %}
+             <td> no pictures </td>
+            {% endif %}
+            {% endfor %}
+        {% endfor %}
+        </tr>
 
-            <img src={{pic}} >
-      
-       {% endfor %}
-       
+     
+    
 <br />
 <br>
 <a href="{{ url_for('add_plant') }}">Add Plant</a>

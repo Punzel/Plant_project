@@ -1,8 +1,10 @@
-{% extends 'base.jinja' %}
+-{% extends 'base.jinja' %}
 
 {% block title %}Plants{% endblock %}
 
 {% block content %}
+
+
 <h1>Plants</h1>
 <p>
 <table border="1" cellpadding="5" cellspacing="5">
@@ -15,6 +17,7 @@
     <th>Placement</th>
     <th>Insect Friendly</th>
     <th>Other Information</th>
+    <th>Pictures</th>
     </tr>
     {% for item in data %}
           <tr>
@@ -26,8 +29,17 @@
          <td>{{ item.placement }}</td>
          <td>{{ item.insect_friendly }}</td>
          <td>{{ item.other_information }}</td>
-          </tr>
-       {% endfor %}
+
+         {% for pic in pictures %}
+            {% if item.id==pic.plant_id %}
+                <td> <img src="static/pictures/{{ pic.picturepath }}"  width="120" height="90" /> </td>
+           {% else %}
+             
+            {% endif %}
+            {% endfor %}
+        {% endfor %}
+        </tr>
+
 <br />
 <br>
 <a href="{{ url_for('add_plant') }}">Add Plant</a>
