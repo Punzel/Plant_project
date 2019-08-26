@@ -17,6 +17,7 @@ app.debug = True
 app.config.from_object(config)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+#sets upload folder and what picture files are allowed
 UPLOAD_FOLDER = "./static"
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
@@ -56,14 +57,17 @@ def newest_plant():
     newest = db_session.query(Plants).filter(Plants.id == db_session.query(func.max(Plants.id)))
     return render_template ('newest_plant.jinja', newest=newest)
 
-# checks for allowed files
+# checks for allowed files for the picture upload
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
 #picture upload
-@app.route("/upload_picture", methods=["GET", "POST"])
-def upload_picture():
+@app.route("/upload_picture/<id>", methods=["GET", "POST"])
+def upload_picture(id):
+    picture_add = db_session.query(Plants).filter(Plants.id == id)
+    
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -78,26 +82,33 @@ def upload_picture():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             print (filename)
+            for item in picture_add:
+                id_plant = item.id
+                print (id_plant)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            add_picture = Pictures(plant_id=id_plant, picturepath=filename)
+            db_session.add(add_picture)
+            db_session.commit()
             return redirect(url_for('plants', filename=filename))
-    return render_template ('upload_picture.jinja')    
+    return render_template ('upload_picture.jinja', picture_add=picture_add)    
 
 
-#admin function for editing information
+#admin function for an overview and the option to edit data 
 @app.route("/plants_admin", methods=["GET", "POST"])      
 def plants_admin():
     data = Plants.query.all()
     pictures = Pictures.query.all()
     return render_template('plants_admin.jinja', data=data, pictures=pictures)
  
-#edit data 
+#edit data on pre-popluated form
 @app.route("/edit/<id>", methods=["GET", "POST"])
 def edit(id):
     plant_edit = db_session.query(Plants).filter(Plants.id == id)
     form = edit_form()
     pre_poplate = []
     for item in plant_edit:
-        print (item.name)      
+        print (item.name)     
+    #this populates the form
     if request.method == 'GET':
         for item in plant_edit:
             form.name.data = item.name
@@ -112,17 +123,8 @@ def edit(id):
 
     return render_template ('edit.jinja', plant_edit=plant_edit, form=form) 
 
-#add pictures of plants
-@app.route("/add_picture", methods=["GET", "POST"]) 
-def add_picture():
-    form = add_picture_form
-    if form.validate_on_submit():
-        try:
-            pic_url = form.pic_url.data
-            print (pic_url)
-        except:
-            print ("error")
-    return render_template('add_picture.jinja', form=form)
+
+    
 '''
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
