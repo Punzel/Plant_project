@@ -3,4 +3,4 @@ A project where I want to set up a database about animal friendly plants for hom
 
 THIS PROJECT IS RIGHT NOW UNDER CONSTRUCTION!!!
 
-I have a long to do list still with things I want to add to this project. The code is still a little messy and will be sorted and commented. more and better 
+I have a long to do list still with things I want to add to this project. The code is still a little messy and will be sorted and commented more and better :) 
