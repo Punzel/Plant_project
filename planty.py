@@ -9,7 +9,8 @@ import os
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
 
-UPLOAD_FOLDER = "./static"
+#sets upload folder and what picture files are allowed
+UPLOAD_FOLDER = "./static/pictures"
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 app = Flask(__name__)
@@ -18,8 +19,13 @@ app.config.from_object(config)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 #sets upload folder and what picture files are allowed
-UPLOAD_FOLDER = "./static"
+UPLOAD_FOLDER = "./static/pictures"
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+
+
+#sets upload folder and what picture files are allowed
+#UPLOAD_FOLDER = "./static/pictures"
+#ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 #index
 @app.route('/')
@@ -31,7 +37,8 @@ def index():
 @app.route("/plants")
 def plants():
     data = Plants.query.all()
-    return render_template('plants.jinja', data=data)
+    pictures = Pictures.query.all()
+    return render_template('plants.jinja', data=data, pictures=pictures)
 
 # form for adding plants. later going to be possible in admin mode only
 @app.route("/add_plant", methods=["GET", "POST"])
@@ -124,25 +131,7 @@ def edit(id):
     return render_template ('edit.jinja', plant_edit=plant_edit, form=form) 
 
 
-    
-'''
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
-def user_add():
-    form = NewUserForm()
-    if form.validate_on_submit():
-        new_user = User(username=form.username.data, password=make_hash(form.password.data), active=form.active.data)
-        if new_user:
-            db_session.add(new_user)
-            db_session.commit()
-            flash('Neuer Nutzer erfolgreich angelegt!')
-            return redirect(url_for('logged_in'))
-        else:
-            flash('Neuer Nutzer konnte nicht angelegt werden!')
-    return render_template('user_add.jinja', form=form)
-    '''
 # call main
 if __name__ == "__main__":
     app.run()
