@@ -3,7 +3,7 @@ import config
 from forms import add_plant_form, add_picture_form, edit_form
 from database import db_session
 from models import Plants, Pictures
-from sqlalchemy import asc, func, desc
+from sqlalchemy import asc, func, desc, update
 from flask_table import Table, Col
 import os
 from werkzeug.utils import secure_filename
@@ -107,29 +107,23 @@ def plants_admin():
     pictures = Pictures.query.all()
     return render_template('plants_admin.jinja', data=data, pictures=pictures)
  
-#edit data on pre-popluated form
+ #edit data on pre-popluated form
 @app.route("/edit/<id>", methods=["GET", "POST"])
 def edit(id):
-    plant_edit = db_session.query(Plants).filter(Plants.id == id)
-    form = edit_form()
-    pre_poplate = []
-    for item in plant_edit:
-        print (item.name)     
-    #this populates the form
-    if request.method == 'GET':
-        for item in plant_edit:
-            form.name.data = item.name
-            form.german_name.data = item.german_name
-            form.latin_name.data = item.latin_name
-            form.plant_information.data = item.plant_information
-            form.light.data = item.light
-            form.watering.data = item.watering
-            form.placement.data = item.placement
-            form.insect_friendly.data = item.insect_friendly
-            form.other_information.data = item.other_information
-
-    return render_template ('edit.jinja', plant_edit=plant_edit, form=form) 
-
+    plant_edit = Plants.query.filter_by(id=id).first()
+    form = edit_form(obj=plant_edit)
+    if form.validate_on_submit():
+        form.populate_obj(plant_edit)
+        edited_plant = Plants(name=form.name.data, german_name=form.german_name.data, latin_name=form.latin_name.data, plant_information=form.plant_information.data, light=form.light.data, watering=form.watering.data, placement=form.placement.data, insect_friendly=form.insect_friendly.data, other_information=form.other_information.data)
+        try:
+            db_session.add(plant_edit)
+            db_session.commit()
+            print ("plant edited")
+            return redirect(url_for('plants'))
+        except:
+            print ("error")
+            return redirect(url_for('plants'))
+    return render_template('edit.jinja', form=form, plant_edit=plant_edit)
 
 
 # call main
