@@ -7,12 +7,12 @@
 
 <h1>Plants</h1>
 
+<h3>Edit Plant :: {{ plant_edit.latin_name }}</h3>
+<p>
 
-<h3>Edit plant: </h3>
-<br> 
 <br />
-<form method="POST" action="{{ url_for('add_plant', next=request.args.get('next'))}}">
- {% for item in plant_edit %}
+<form method="POST" action="{{ url_for('edit', id=plant_edit.id, next=request.args.get('next')) }}">
+
     {{ form.csrf_token }}
     {{form.name.label }} {{form.name(size=20)}} 
     <br>
@@ -32,9 +32,9 @@
     <br>
      {{form.other_information.label }} {{form.other_information(size=20)}}
     <br>
+
     <input type="submit" value="Go">
 </form>
- {% endfor %}
 </p>
 {% endblock %}
 

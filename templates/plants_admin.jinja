@@ -12,6 +12,7 @@
     <th>Latin Name</th>
     <th>Plant Information</th>
     <th>Light</th>
+    <th>Watering</th>
     <th>Placement</th>
     <th>Insect Friendly</th>
     <th>Other Information</th>
@@ -26,6 +27,7 @@
          <td>{{ item.latin_name }}</td>
          <td>{{ item.plant_information }}</td>
          <td>{{ item.light }}</td>
+        <td>{{ item.watering }}</td>
          <td>{{ item.placement }}</td>
          <td>{{ item.insect_friendly }}</td>
          <td>{{ item.other_information }}</td>
@@ -36,7 +38,6 @@
             {% if item.id==pic.plant_id %}
                 <td> <img src="static/pictures/{{ pic.picturepath }}"  width="120" height="90" /> </td>
            {% else %}
-             <td> no pictures </td>
             {% endif %}
             {% endfor %}
         {% endfor %}
