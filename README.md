@@ -5,4 +5,4 @@ THIS PROJECT IS RIGHT NOW UNDER CONSTRUCTION!!!
 
 I have a long to do list still with things I want to add to this project. The code is still a little messy and will be sorted and commented more and better :) 
 
-![alt text](https://imgur.com/welUO4I)
+![alt text](https://i.imgur.com/welUO4I.png)
